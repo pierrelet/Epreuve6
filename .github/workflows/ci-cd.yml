@@ -1,4 +1,4 @@
-﻿name: vitalsync-ci-cd
+name: vitalsync-ci-cd
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - run: npm ci
+      - run: npm install
       - run: npm test
 
   build:
@@ -25,12 +25,15 @@ jobs:
     needs: lint-test
     steps:
       - uses: actions/checkout@v4
-      - run: echo "Build docker images here"
+      - run: docker build -t vitalsync-backend:ci ./backend
+      - run: docker build -t vitalsync-frontend:ci ./frontend
 
   deploy-staging:
     runs-on: ubuntu-latest
     needs: build
     steps:
       - uses: actions/checkout@v4
-      - run: echo "Deploy staging here"
-      - run: echo "Health check simulated"
+      - run: docker compose up -d --build
+      - run: curl --fail --retry 15 --retry-delay 2 http://localhost:3000/health
+      - if: always()
+        run: docker compose down
