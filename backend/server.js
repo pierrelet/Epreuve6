@@ -2,11 +2,11 @@
 const app = express();
 
 app.get("/health", (req, res) => {
-  res.json({ status: "ok", source: "feature-add-endpoint", timestamp: new Date() });
+  res.json({ status: "ok", env: "staging", checkedAt: new Date() });
 });
 
 app.get("/api/activities", (req, res) => {
-  res.json([{ id: 1, type: "run" }]);
+  res.json([]);
 });
 
 app.listen(3000, () => console.log("VitalSync API on :3000"));
