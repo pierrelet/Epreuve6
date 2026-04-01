@@ -2,7 +2,7 @@
 const app = express();
 
 app.get("/health", (req, res) => {
-  res.json({ status: "ok", env: "staging", checkedAt: new Date() });
+  res.json({ status: "ok", version: "A", timestamp: new Date() });
 });
 
 app.get("/api/activities", (req, res) => {
